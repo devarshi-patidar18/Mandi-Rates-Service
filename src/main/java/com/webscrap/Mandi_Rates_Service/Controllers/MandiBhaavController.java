@@ -1,6 +1,7 @@
 package com.webscrap.Mandi_Rates_Service.Controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,18 +35,23 @@ public class MandiBhaavController {
     @PostMapping("/fetchMarketPriceList")
     public ResponseEntity<List<MandiBhaavDto>> fetchMarketPriceList(@RequestBody MandiBhaavDto oMandiBhaavDto) {
 
+        List<MandiBhaavDto> dtoList = new ArrayList<>();
+        // ResponseDto responseDto = new ResponseDto();
         try {
-            if (oMandiBhaavDto.getCommodityId() != null) {
+            if (oMandiBhaavDto.getCommodityId() != null && oMandiBhaavDto.getStateCode() !=null && oMandiBhaavDto.getDistrictId()!=null && oMandiBhaavDto.getMarketId()!=null && oMandiBhaavDto.getPriceStartDate()!=null && oMandiBhaavDto.getPriceEndDate()!=null) {
 
                 return oBhaavServiceImpl.fetchMarketPriceList(oMandiBhaavDto);
             } else {
-
-                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+                MandiBhaavDto dto = new MandiBhaavDto();
+                dto.setResponseMessage("Provide Mandatory Fields!");
+                dtoList.add(dto);
+                return new ResponseEntity<>(dtoList, HttpStatus.OK);
             }
 
         } catch (Exception e) {
            
-            e.printStackTrace();
+            // e.printStackTrace();
+            System.out.println(e);
         }
 
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);

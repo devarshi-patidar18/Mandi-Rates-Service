@@ -126,7 +126,8 @@ public class MandiBhaavServiceImpl {
                 Element element = mandisElements.get(i);
                 
             try{
-                if (element.select("span#cphBody_GridPriceData_Labdistrict_name_" + (i - 1)).text() != null) {
+                System.out.println(element.select("span#cphBody_GridPriceData_Labdistrict_name_" + (i - 1)).text());
+                if (element.select("span#cphBody_GridPriceData_Labdistrict_name_" + (i - 1)).text() != "") {
                     MandiBhaavDto oBhaavDto = new MandiBhaavDto();
    
                     oBhaavDto.setDistrictName(
@@ -160,18 +161,22 @@ public class MandiBhaavServiceImpl {
             
             }
             catch(Exception e){
+                System.out.println(element.select("span#cphBody_GridPriceData_Labdistrict_name_" + (i - 1)).text().equals(""));
+                System.out.println("in first catch");
                 e.printStackTrace();
             }
             }
         } catch (Exception e) {
+            System.out.println("in second catch");
             e.printStackTrace();
-            List<MandiBhaavDto> emptyList = new ArrayList<>();
+            // List<MandiBhaavDto> emptyList = new ArrayList<>();
             oMandiBhaavDto.setResponseMessage("Data Not Found");
-            oMandiBhaavDto.setResponseCode("404");
-            emptyList.add(oMandiBhaavDto);
-            emptyList.add(oMandiBhaavDto);
-            return new ResponseEntity<>(emptyList,HttpStatus.NOT_FOUND);
+            // oMandiBhaavDto.setResponseCode("404");
+            mandiList.add(oMandiBhaavDto);
+            // mandiList.add(oMandiBhaavDto);
+            return new ResponseEntity<>(mandiList,HttpStatus.NOT_FOUND);
         }
+        // mandiList.sort();
         return new ResponseEntity<>(mandiList, HttpStatus.OK);
 
     }
